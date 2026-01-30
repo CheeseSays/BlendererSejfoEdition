@@ -10,4 +10,4 @@ BlenderProps is a helper add-on for Visual Components that creates a new tab in 
 
 # How to install
 Download the add-on zip-files.
-Unzip into the VC commands folder which usually is found in  C:\Users\<username>\Documents\Visual Components\4.10\My Commands\Python 2
+Unzip into the VC commands folder which usually is found in  C:\Users\\<username>\Documents\Visual Components\4.10\My Commands\Python 2
