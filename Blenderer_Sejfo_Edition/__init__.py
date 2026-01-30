@@ -1,7 +1,7 @@
 from vcApplication import *
 
 cmdName = 'cmdBlenderer2'
-title = 'Blenderer 2'
+title = 'Blenderer SE'
 pyNetCommand = findCommand('netCommand')
 pyNetCommand.execute('SetLocalizationCommand', 'English', 'Python', cmdName, 'Text', title)
 
