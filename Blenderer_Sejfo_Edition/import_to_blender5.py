@@ -26,6 +26,8 @@ video_container = 'AVI' # <'AVI', 'MP4'>
 importlib.reload(material_helper)
 random.seed(1)
 
+
+# MARK: Version Check Utilities
 def is_blender_version(major, minor=0, patch=0, operator='>='):
     """
     Check Blender version against specified version.
@@ -578,6 +580,11 @@ def do_import_vc():
                         if prop_value == True or prop_value == 'true' or prop_value == 'True' or prop_value == 1:
                             print(f"Enabling holdout mask for '{obj_name}' and its children")
                             enable_holdout_mask_recursive(obj)
+                    if prop_name == 'Blender::Collection':
+                        collection_name = str(prop_value)
+                        print(f"  Found Blender::Collection property! Value: {collection_name}")
+                        print(f"Moving '{obj_name}' and its children to collection '{collection_name}'")
+                        move_to_collection_recursive(obj, collection_name)
 
                 # Add component info
                 if 'component_name' in metadata:
@@ -618,6 +625,12 @@ def do_import_vc():
                                 if prop_value == True or prop_value == 'true' or prop_value == 'True' or prop_value == 1:
                                     print(f"Enabling holdout mask for link '{link_name}' and its children")
                                     enable_holdout_mask_recursive(link_obj)
+                            if prop_name == 'Blender::Collection':
+                                collection_name = str(prop_value)
+                                print(f"Moving link '{link_name}' and its children to collection '{collection_name}'")
+                                move_to_collection_recursive(link_obj, collection_name)
+    
+    # MARK: Action killer
     # Kill actions with less than 3 keyframes to free up memory
     min_frames = 3
     actions_to_remove = [
@@ -812,6 +825,8 @@ def set_up_backdrop( config_dict ):
     link = links.new(alpha_node.outputs[0], output_node.inputs[0]) #alpha result to composite output
 
 
+# MARK: Recursive property functions
+
 def getChildren(myObject): 
     children = [] 
     for ob in bpy.data.objects: 
@@ -877,6 +892,36 @@ def enable_holdout_mask_recursive(obj):
     for child in children:
         enable_holdout_mask_recursive(child)
 
+def move_to_collection_recursive(obj, collection_name):
+    """
+    Recursively move an object and all its children to a specified collection.
+    
+    Args:
+        obj: Blender object to move
+        collection_name: Name of the target collection
+    """
+    print(f"  - Moving '{obj.name}' to collection '{collection_name}'")
+    
+    # Get or create target collection
+    if collection_name in bpy.data.collections:
+        target_collection = bpy.data.collections[collection_name]
+    else:
+        target_collection = bpy.data.collections.new(collection_name)
+        bpy.context.scene.collection.children.link(target_collection)
+        print(f"    Created new collection '{collection_name}'")
+    
+    # Remove from all other collections
+    for coll in obj.users_collection:
+        coll.objects.unlink(obj)
+    
+    # Link to target collection
+    target_collection.objects.link(obj)
+    
+    # Recursively move all children
+    children = getChildren(obj)
+    for child in children:
+        move_to_collection_recursive(child, collection_name)
+
 def look_at(object_, point):
     loc_object_ = object_.location
     direction = point - loc_object_
@@ -938,7 +983,7 @@ def clearScene(re_render):
             for id_data in bpy_data_iter:
                 bpy_data_iter.remove(id_data)
 
-
+# MARK: OBJ Importing
 ##########################################
 ############# OBJ IMPORTING ##############
 ##########################################
@@ -977,7 +1022,7 @@ def stripNonAscii(s):
             ss += c
     return ss
 
-
+# MARK: Custom Materials
 def initialize_custom_materials():
     """
     Initialize custom materials from materials.py module.
@@ -1027,7 +1072,7 @@ def replace_glass_materials(blender_materials):
     glass_bronze = materials.glass___smokey_bronze
     glass_safety = materials.glass___safety
     glass_frosted = materials.glass___frosted
-    standard_glass_names = ['glass1','glass2','glass3','window','reflective_glass']
+    standard_glass_names = ['glass1','glass2','glass3','window','reflective_glass','clear_glass']
     safety_glass_names = ['safety_glass','green_tinted_glass']
     frosted_glass_names = ['frosted_glass']
     black_glass_names = ['black_smoke_glass']
