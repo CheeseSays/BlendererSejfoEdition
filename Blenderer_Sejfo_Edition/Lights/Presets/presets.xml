@@ -1,0 +1,45 @@
+<presets>
+  <preset name="3 Light Studio">
+    <hdri file="studio_small_01_4k.hdr" strength="0.6"></hdri>
+    <sun_light distance="auto" orientation="45" elevation="75" r="255" g="255" b="255" energy="0.3" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="135" elevation="30" r="255" g="255" b="255" energy="1.0" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="280" elevation="60" r="255" g="255" b="255" energy="0.4" size="0.01"></sun_light>
+  </preset>
+  <preset name="2 Light Studio">
+    <hdri file="studio_small_03_4k.hdr" strength="0.1"></hdri>
+    <sun_light distance="auto" orientation="90" elevation="75" r="255" g="255" b="255" energy="0.7" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="290" elevation="30" r="255" g="255" b="255" energy="0.35" size="0.01"></sun_light>
+  </preset>
+  <preset name="1 Light Studio">
+    <hdri file="studio_small_07_4k.hdr" strength="0.07"></hdri>
+    <sun_light distance="auto" orientation="280" elevation="40" r="255" g="255" b="255" energy="2" size="0.01"></sun_light>
+  </preset>
+  <preset name="Machine Shop">
+    <hdri file="machine_shop_02_4k.hdr" strength="0.3"></hdri>
+    <sun_light distance="auto" orientation="42" elevation="30" r="255" g="255" b="255" energy="0.5" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="180" elevation="80" r="255" g="255" b="255" energy="0.9" size="0.01"></sun_light>
+  </preset>
+  <preset name="EmptyWarehouse">
+    <hdri file="empty_warehouse_01_4k.hdr" strength="0.3"></hdri>
+    <sun_light distance="auto" orientation="42" elevation="30" r="255" g="255" b="255" energy="0.5" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="180" elevation="80" r="255" g="255" b="255" energy="0.9" size="0.01"></sun_light>
+  </preset>
+  <preset name="Afternoon">
+    <hdri file="kiara_6_afternoon_4k.hdr" strength="0.4"></hdri>
+    <sun_light distance="auto" orientation="315" elevation="65" r="255" g="255" b="255" energy="6" size="0.01"></sun_light>
+  </preset>
+  <preset name="PowerplantInterior">
+    <hdri file="peppermint_powerplant_2_4k.hdr" strength="0.5"></hdri>
+    <sun_light distance="auto" orientation="320" elevation="55" r="255" g="255" b="250" energy="1" size="0.01"></sun_light>
+    <sun_light distance="auto" orientation="90" elevation="75" r="255" g="255" b="250" energy="2" size="0.01"></sun_light>
+  </preset>
+  <preset name="Evening">
+    <hdri file="courtyard_night_4k.hdr" strength="0.4"></hdri>
+    <sun_light distance="auto" orientation="210" elevation="25" r="255" g="255" b="255" energy="1" size="0.01"></sun_light>
+  </preset>
+  <preset name="Autoshop">
+    <hdri file="autoshop_01_4k.hdr" strength="1"></hdri>
+  </preset>
+  <preset name="*NULL*">
+  </preset>
+</presets>
