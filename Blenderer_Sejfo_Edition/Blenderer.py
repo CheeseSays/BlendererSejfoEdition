@@ -646,11 +646,8 @@ def exportGeo(items,
       dead = True
     if dead:
       continue
-    if object_type in ['RECORDER', 'POINT_LIGHT', 'AREA_LIGHT', 'SUN_LIGHT', 'SPOT_LIGHT', 'SPARKS_VISUAL']:
+    if object_type in ['CAMERA', 'RECORDER', 'POINT_LIGHT', 'AREA_LIGHT', 'SUN_LIGHT', 'SPOT_LIGHT', 'SPARKS_VISUAL']:
       # skip abstract components. Geometry not exported
-      continue
-    if isinstance(node, type(camera)):
-      # item is of type camera. Skip as there's no geometry to export
       continue
     if node.Type in [VC_COMPONENT, VC_NODE]:
       setBound(node,threeD_bound)
@@ -711,22 +708,29 @@ def recKeyFrame(items, rec_data, animation = False):
     if item_type == 'CAMERA':
       # element is camera
       object_name = 'VC_TO_BLENDER_CAMERA_OBJECT'
-      mtx = camera.Matrix
-      rot = mtx.WPR
-      eye = camera.Eye
-      coi = camera.Coi
-      position_data = keyframe_index_c, eye.X*SCALE, eye.Y*SCALE, eye.Z*SCALE, coi.X*SCALE, coi.Y*SCALE, coi.Z*SCALE
-      title_line = 'addon: t%.2f; ' % (sim.SimTime)
-      cam_id = 'x=%.2f; y=%.2f; z=%.2f; mtx.Y=%.2f' % (eye.X*SCALE, eye.Y*SCALE, eye.Z*SCALE, mtx.P.Y)
-      if cam_id == prev_cam_id:
-        pass
-        #print title_line + cam_id, ' <= same'
+      if deadComponent or item is None:
+        if keyframe_index == 0:
+          object_data = []
+          position_data = (keyframe_index_c, 0, 0, 0, 0, 0, 0)
+        else:
+          position_data = rec_data[i][3][-1]
       else:
-        pass
-        #print title_line + cam_id
-      prev_cam_id = cam_id
-      if keyframe_index == 0:
-        object_data = []
+        mtx = item.Matrix
+        rot = mtx.WPR
+        eye = item.Eye
+        coi = item.Coi
+        position_data = keyframe_index_c, eye.X*SCALE, eye.Y*SCALE, eye.Z*SCALE, coi.X*SCALE, coi.Y*SCALE, coi.Z*SCALE
+        title_line = 'addon: t%.2f; ' % (sim.SimTime)
+        cam_id = 'x=%.2f; y=%.2f; z=%.2f; mtx.Y=%.2f' % (eye.X*SCALE, eye.Y*SCALE, eye.Z*SCALE, mtx.P.Y)
+        if cam_id == prev_cam_id:
+          pass
+          #print title_line + cam_id, ' <= same'
+        else:
+          pass
+          #print title_line + cam_id
+        prev_cam_id = cam_id
+        if keyframe_index == 0:
+          object_data = []
     elif item_type == 'SPARKS':
       object_name = item.Name
       object_name = sanitizefilename(object_name)
